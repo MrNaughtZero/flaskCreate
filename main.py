@@ -79,6 +79,10 @@ if setup_login == 'Y':
     create_models = open('app/models.py', 'x')
     create_models.write('''from app.database import db\nimport hashlib\nfrom hashlib import sha256\n\nclass User(db.Model):\n    __tablename__ = 'users'\n    id = db.Column(db.Integer, primary_key=True)\n    username = db.Column(db.String(255), nullable=False)\n    email = db.Column(db.String(255), nullable=False)\n    password = db.Column(db.String(255), nullable=False)\n    \n    def get_id(self):\n        return self.id\n    \n    def is_authenticated(self):\n        return True\n\n    def get_username(self):\n        return self.username\n\n    def is_active(self):\n        return True\n\n    def is_anonymous(self):\n        return False\n\n    def create_user(self):\n        db.session.add(self)\n        db.session.commit()\n\n    def update(self):\n        db.session.commit()\n\n    @staticmethod\n    def hash_password(password):\n        return sha256(password.encode('utf-8')).hexdigest()''')
 
+setup_venv = input('Setup virtual environment: ')
+if setup_venv == 'Y':
+    os.system('python3 -m venv venv')
+    
 create_classes = open('app/classes.py', 'x')
 
 setup_forms = input('Create forms: ')
